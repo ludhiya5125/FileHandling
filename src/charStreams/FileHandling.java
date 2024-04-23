@@ -1,38 +1,39 @@
 package charStreams;
 
 import java.io.*;
+import java.util.Scanner;
 
 public class FileHandling
 {
     public static void main(String[] args)
     {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter("InputFile.txt"))) {
-            try (BufferedReader reader = new BufferedReader(new InputStreamReader(System.in))) {
-                String str;
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("userInput.txt"))) {
+            try (Scanner scanner = new Scanner(System.in)) {
+                String input;
                 do {
                     System.out.print("Enter the text to be written: ");
-                    str = reader.readLine();
-                    writer.write(str + "\n");
+                    input = scanner.nextLine();
+                    writer.write(input + "\n");
 
                     System.out.print("Want to add more? (y/n): ");
-                    str = reader.readLine();
-                } while (!str.equalsIgnoreCase("n"));
+                    input = scanner.nextLine();
+                } while (!input.equalsIgnoreCase("n"));
             }
 
-            System.out.println("Entered text saved to the file--> 'InputFile.txt'.");
+            System.out.println("User input saved to file 'InputFile.txt'.");
         } catch (IOException e) {
             System.err.println(e.getMessage());
             return;
         }
-        // Read and display content from the file
+
+        // Read and display content from the file using Scanner
         System.out.println("Contents of the file 'InputFile.txt':");
-        try (BufferedReader fileReader = new BufferedReader(new FileReader("InputFile.txt"))) {
-            String line;
-            while ((line = fileReader.readLine()) != null) {
-                System.out.println(line);
+        try (Scanner fileScanner = new Scanner(new File("InputFile.txt"))) {
+            while (fileScanner.hasNextLine()) {
+                System.out.println(fileScanner.nextLine());
             }
-        } catch (IOException e) {
-            System.err.println(e.getMessage());
+        } catch (FileNotFoundException e) {
+            System.err.println( e.getMessage());
         }
     }
 }
